@@ -1,36 +1,30 @@
 const { createInterface } = require('readline');
 
-let cordinates = { x: 0, y: 0, d:'S' };
+let cordinates = { x: 0, y: 0, d:'N' };
 
 // L R 90 graus
-// M MOver a sonda
+// M Mover a sonda
 // P Aciona a camera
 
 function workDirections(inputDirection) {
     if(inputDirection === 'L'){
-        switch(cordinates.d){
-            case 'S' :
-                return 'E'
-            case 'E' :
-                return 'N'
-            case 'N' :
-                return 'W' 
-            case 'W' :
-                return 'S'  
+        let changedDirection = {
+            'S':'E',
+            'E':'N',
+            'N':'W',
+            'W':'S'
         }
+        return changedDirection[cordinates.d];
     }
 
     if(inputDirection === 'R'){
-        switch(cordinates.d){
-            case 'S' :
-                return 'W'
-            case 'W' :
-                return 'N'
-            case 'N' :
-                return 'E'
-            case 'E' :
-                return 'S'   
+        let changedDirection = {
+            'S':'W',
+            'W':'N',
+            'N':'E',
+            'E':'S'
         }
+        return changedDirection[cordinates.d];
     }
 }
 
