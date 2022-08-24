@@ -83,10 +83,19 @@ const questions = {
         questions[3]()
     }),
 
-    3: () => readLine.question("Defina o movimento da sonda: ", answer => {
-            const actualIndex = cordinates.length - 1
-            workMovement(actualIndex)
-            questions[4]()
+    3: () => readLine.question("Defina o movimento da sonda: ", answer => {    
+        const actualIndex = cordinates.length - 1
+        if(answer.includes(!'M' || !'P' || !'L' || !'R')) return;
+
+        answer.forEach(order => {
+            
+            if(order === 'M'){
+                workMovement(actualIndex)
+            }
+
+        } )
+            
+        questions[4]()
     }),
 
     4: () => readLine.question("Inserir mais uma sonda? s = (sim) n = (não): ", answer => {
