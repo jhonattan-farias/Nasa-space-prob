@@ -1,11 +1,13 @@
 const { createInterface } = require('readline');
-// import {workMovement} from './functions'
-
-
-let probes = [];
-let probesMoved = 0;
-let highlandSize = { x:0, y: 0 }
-
+const { validate } = require('./validations')
+let { 
+    workMovement,
+    workCordinates,
+    workDirections, 
+    probes, 
+    highlandSize, 
+    probesMoved 
+} = require('./functions')
 
 // L R 90 graus.
 // M Mover a sonda.
@@ -20,48 +22,7 @@ let highlandSize = { x:0, y: 0 }
     // Garantir que os movimentos da sonda recebidos sejam (M R L P) [X]
 // Adicionar linhas de entrada para adicionar mais sondas [X]
 // Garantir que as instruções de movimento sejam criadas apenas após que todas as sondas sejam adicionadas []
-// Criar uma linha de instruções de movimento para cada sonda [] 
-
-function workMovement(index) {
-    let movement = {
-        'S': () => probes[index].y--,
-        'W': () => probes[index].x--,
-        'E': () => probes[index].x++,
-        'N': () => probes[index].y++
-    }
-    movement[probes[index].d]()
-}
-
-function workDirections(inputDirection,index) {
-
-    if(inputDirection === 'L'){
-        let changedDirection = {
-            'S':'E',
-            'E':'N',
-            'N':'W',
-            'W':'S'
-        }
-        probes[index].d = changedDirection[probes[index].d];
-    }
-
-    if(inputDirection === 'R'){
-        let changedDirection = {
-            'S':'W',
-            'W':'N',
-            'N':'E',
-            'E':'S'
-        }
-        probes[index].d = changedDirection[probes[index].d];
-    }
-}
-
-function workCordinates({ x, y, d }) {
-    // if(x > highlandSize.x || x - 0) return;
-    // if(y > highlandSize.y || y - 0) return;
-    
-    probes.push({ x, y, d})
-    console.log(probes)
-}
+// Criar uma linha de instruções de movimento para cada sonda [X] 
 
 const readLine = createInterface({
     input:process.stdin,
@@ -71,31 +32,28 @@ const readLine = createInterface({
 const questions = {
 
     0: () => readLine.question("Defina o tamanho do eixo x do planalto: ", answer => {
-        if(answer < 0 || !Number(answer)){
-            console.log('Entrada inválida, digite novamente!')
+        if(validate('highland',answer)){
             questions[0]()
+            return;
         }
         highlandSize.x = answer
         questions[1]()
     }),
     
     1: () => readLine.question("Defina o tamanho do eixo y do planalto: ", answer => {
-        if(answer < 0 || !Number(answer)){
-            console.log('Entrada inválida, digite novamente!')
-            questions[0]()
+        if(validate('highland',answer)){
+            questions[1]()
+            return;
         }
         highlandSize.y = answer
         questions[2]()
     }),
 
     2: () => readLine.question(`Defina as cordenadas da sonda ex(22N): `, answer => {
-
-        if(!Number(answer[0]) || !Number(answer[1])|| !['N','S','E','W'].includes(answer[2])){
-            console.log('Entrada inválida, digite novamente!')
-            questions[2]()
+        if(validate('cordinates',answer)){
+            questions[2]() 
             return;
         }
-
         workCordinates({ 
             x: answer[0],
             y: answer[1],
@@ -108,7 +66,7 @@ const questions = {
     3: () => readLine.question(`Defina as instruções da sonda ${probesMoved + 1}: `, answer => {    
         const actualIndex = probesMoved
 
-        let orders = {
+        let instructions = {
             'M': () => workMovement(actualIndex),
             'P': () => {
                 console.log('Fotografando area')
@@ -120,16 +78,16 @@ const questions = {
             'R': () => workDirections('R',actualIndex)
         }
 
-        for(const order of answer){
-            if(!['L','R','M','P'].includes(order)){
-                console.log('Instruções invalidas, digite novamente!')
+        for(const instruction of answer){
+            if(validate('instructions',instruction)){
                 questions[3]()
                 return;
             }
-            orders[order]()
+            instructions[instruction]()
         }
 
         probesMoved++
+        console.log(probes)
         probesMoved > probes.length - 1 ? readLine.close() : questions[3]()
     }),
 
