@@ -1,4 +1,5 @@
 const { createInterface } = require('readline');
+// import {workMovement} from './functions'
 
 
 let probes = [];
@@ -104,7 +105,7 @@ const questions = {
         questions[4]()
     }),
 
-    3: () => readLine.question(`Defina as instruções da sonda ${probes.length - 1}: `, answer => {    
+    3: () => readLine.question(`Defina as instruções da sonda ${probesMoved + 1}: `, answer => {    
         const actualIndex = probesMoved
 
         let orders = {
@@ -128,10 +129,8 @@ const questions = {
             orders[order]()
         }
 
-        probes++
-        console.log(probes)
-        probes.length - 1 === probesMoved ? readLine.close() : questions[3]()
-
+        probesMoved++
+        probesMoved > probes.length - 1 ? readLine.close() : questions[3]()
     }),
 
     4: () => readLine.question("Inserir mais uma sonda? s = (sim) n = (não): ", answer => {
