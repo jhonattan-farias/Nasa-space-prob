@@ -1,9 +1,13 @@
-const {highlandSize} = require('./functions')
+const { highlandSize, probes } = require('./functions')
 
-function validate(type,answer) {
-    const validations = {
+function validate() {
+    const {
+        highland,
+        cordinates,
+        instructions,
+    } = {
        
-        highland: function() {
+        highland: function(answer) {
         if(answer < 0 || !Number(answer)){
             console.log('Entrada inválida, digite novamente!')
             return true;
@@ -11,7 +15,7 @@ function validate(type,answer) {
         return false;
         },
         
-        cordinates: function() {
+        cordinates: function(answer) {
             if(
                     answer.length < 3
                 ||  Number(answer[1] > highlandSize.y)
@@ -28,15 +32,29 @@ function validate(type,answer) {
             return false;
         },
 
-        instructions: function() {
+        instructions: function(answer) {
             if(!['L','R','M','P'].includes(answer)){
                 console.log('Instruções invalidas, digite novamente!')
                 return true;
             }
+        },
+
+        movement: function(index) {
+            const probe = probes[index]
+            if(
+                   probe.x + 1 > highlandSize.x 
+                || probe.x - 1 < 0
+                || probe.y + 1 > highlandSize.y
+                || probe.y - 1 < 0 
+            ){
+                console.log('The probe cannot go out of the demarked area')
+                return true;
+            }
             return false;
         }
+
     }
-    return validations[type]()
+    return { highland, cordinates, instructions }
 }
 
 module.exports = {

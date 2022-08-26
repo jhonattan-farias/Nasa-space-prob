@@ -25,40 +25,17 @@ function workDirections(inputDirection,index) {
     }
 }
 
-function workMovement(index) {
+function workMovement() {
     let movement = {
-        'S': () => {
-            if(probes[index].y - 1 < 0){
-                console.log('The probe cannot go out of the demarked area')
-                return true;
-            }
-            probes[index].y--
-        },
-        'W': () => {
-            if(probes[index].x - 1 < 0){
-                console.log('The probe cannot go out of the demarked area')
-                return true;
-            }
-            probes[index].x--
-        },
-        'E': () => {
-            if(probes[index].x + 1 > highlandSize.x){
-                console.log('The probe cannot go out of the demarked area')
-                return true;
-            }
-            probes[index].x++ 
-        },
-        'N': () => {
-            if(probes[index].y + 1 > highlandSize.y){
-                console.log('The probe cannot go out of the demarked area')
-                return true;
-            }
-            probes[index].y++
-        }
-    };
+        'S': () => probes[index].y--,
+        'W': () => probes[index].x--,
+        'E': () => probes[index].x++,
+        'N': () => probes[index].y++
+    }
 
-    movement[probes[index].d]()
+   return movement[probes[index].d]();
 }
+
 
 function workCordinates({ x, y, d }) {
     probes.push({ x, y, d})

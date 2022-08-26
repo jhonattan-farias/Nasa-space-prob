@@ -17,7 +17,8 @@ const readLine = createInterface({
 const questions = {
 
     0: () => readLine.question("Defina o tamanho do eixo x do planalto: ", answer => {
-        if(validate('highland',answer)){
+        const { highland } = validate()
+        if(highland(answer)){
             questions[0]()
             return;
         }
@@ -26,7 +27,8 @@ const questions = {
     }),
     
     1: () => readLine.question("Defina o tamanho do eixo y do planalto: ", answer => {
-        if(validate('highland',answer)){
+        const { highland } = validate()
+        if(highland(answer)){
             questions[1]()
             return;
         }
@@ -35,7 +37,8 @@ const questions = {
     }),
 
     2: () => readLine.question(`Defina as cordenadas da sonda ex(22N): `, answer => {
-        if(validate('cordinates',answer)){
+        const { cordinates } = validate()
+        if(cordinates(answer)){
             questions[2]() 
             return;
         }
@@ -48,9 +51,10 @@ const questions = {
     }),
 
     3: () => readLine.question(`Defina as instruções da sonda ${movedProbs + 1}: `, answer => {   
-        let instructions = {
+        const { instructions } = validate()
+        const probeInstructions = {
             'M': () => {
-                if(workMovement(movedProbs)){
+                if(workMovement()){
                     questions[3]()
                     return;
                 }
@@ -61,17 +65,17 @@ const questions = {
         }
 
         for(const instruction of answer){
-            if(validate('instructions',instruction)){
+            if(instructions(movedProbs + 1,answer)){
                 questions[3]()
                 return;
             }
-            instructions[instruction]()
+            probeInstructions[instruction]
         }
 
         movedProbs++
 
         if(movedProbs > probes.length - 1){
-            const { x, y, d } = probes[movedProbs-1]
+            const { x, y, d } = probes[movedProbs - 1]
             console.log(`${x} ${y} ${d}`)
             readLine.close()  
             return;
