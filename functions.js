@@ -25,7 +25,7 @@ function workDirections(inputDirection,index) {
     }
 }
 
-function workMovement() {
+function workMovement(index) {
     let movement = {
         'S': () => probes[index].y--,
         'W': () => probes[index].x--,

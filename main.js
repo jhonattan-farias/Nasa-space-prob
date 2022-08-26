@@ -51,25 +51,27 @@ const questions = {
     }),
 
     3: () => readLine.question(`Defina as instruções da sonda ${movedProbs + 1}: `, answer => {   
-        const { instructions } = validate()
+        const { instructions, movement } = validate()
+
         const probeInstructions = {
-            'M': () => {
-                if(workMovement()){
-                    questions[3]()
-                    return;
-                }
-            },
+            'M': () => workMovement(movedProbs),
             'P': () => console.log('Área fotografada!'),
             'L': () => workDirections('L',movedProbs),
             'R': () => workDirections('R',movedProbs)
         }
 
         for(const instruction of answer){
-            if(instructions(movedProbs + 1,answer)){
+            if(instructions(instruction)){
                 questions[3]()
                 return;
             }
-            probeInstructions[instruction]
+
+            if(instruction === 'M' && movement(movedProbs)){
+                questions[3]()
+                return;
+            }
+            
+            probeInstructions[instruction]()
         }
 
         movedProbs++

@@ -5,19 +5,18 @@ function validate() {
         highland,
         cordinates,
         instructions,
+        movement
     } = {
-       
         highland: function(answer) {
-        if(answer < 0 || !Number(answer)){
-            console.log('Entrada inválida, digite novamente!')
-            return true;
-        }
-        return false;
+            if(answer < 0 || !Number(answer)){
+                console.log('Entrada inválida, digite novamente!')
+                return true;
+            }
+            return false;
         },
         
         cordinates: function(answer) {
-            if(
-                    answer.length < 3
+            if(     answer.length < 3
                 ||  Number(answer[1] > highlandSize.y)
                 ||  Number(answer[0] > highlandSize.x)
                 ||  Number(answer[0] < 0)
@@ -41,20 +40,40 @@ function validate() {
 
         movement: function(index) {
             const probe = probes[index]
-            if(
-                   probe.x + 1 > highlandSize.x 
-                || probe.x - 1 < 0
-                || probe.y + 1 > highlandSize.y
-                || probe.y - 1 < 0 
-            ){
-                console.log('The probe cannot go out of the demarked area')
-                return true;
+            const logError = () => console.log('A sonda não pode sair da área demarcada!')
+            const movementValidations = {
+                'N': () => {
+                   if(probe.y + 1 > highlandSize.y){
+                        logError()
+                        return true;
+                   } 
+                },
+                'S': () => {
+                    if(probe.y - 1 < 0 ){
+                        logError()
+                        return true;
+                    }
+                },
+                'W': () => {
+                    if(probe.x - 1 < 0){
+                        logError()
+                        return true;
+                    }
+                },
+                'E': () => {
+                    if(probe.x + 1 > highlandSize.x){
+                        logError()
+                        return true;
+                    }
+                }
+
             }
-            return false;
+
+            return movementValidations[probe.d]()
         }
 
     }
-    return { highland, cordinates, instructions }
+    return { highland, cordinates, instructions, movement }
 }
 
 module.exports = {
