@@ -1,5 +1,5 @@
 let probes = [];
-let probesMoved = 0;
+let movedProbs = 0;
 let highlandSize = { x:0, y: 0 }
 
 function workDirections(inputDirection,index) {
@@ -25,20 +25,42 @@ function workDirections(inputDirection,index) {
     }
 }
 
-function  workMovement (index) {
+function workMovement(index) {
     let movement = {
-        'S': () => probes[index].y--,
-        'W': () => probes[index].x--,
-        'E': () => probes[index].x++,
-        'N': () => probes[index].y++
+        'S': () => {
+            if(probes[index].y - 1 < 0){
+                console.log('The probe cannot go out of the demarked area')
+                return true;
+            }
+            probes[index].y--
+        },
+        'W': () => {
+            if(probes[index].x - 1 < 0){
+                console.log('The probe cannot go out of the demarked area')
+                return true;
+            }
+            probes[index].x--
+        },
+        'E': () => {
+            if(probes[index].x + 1 > highlandSize.x){
+                console.log('The probe cannot go out of the demarked area')
+                return true;
+            }
+            probes[index].x++ 
+        },
+        'N': () => {
+            if(probes[index].y + 1 > highlandSize.y){
+                console.log('The probe cannot go out of the demarked area')
+                return true;
+            }
+            probes[index].y++
+        }
     };
+
     movement[probes[index].d]()
 }
 
 function workCordinates({ x, y, d }) {
-    // if(x > highlandSize.x || x - 0) return;
-    // if(y > highlandSize.y || y - 0) return;
-    
     probes.push({ x, y, d})
     console.log(probes)
 }
@@ -48,6 +70,6 @@ module.exports = {
     workDirections,
     workCordinates,
     probes,
-    probesMoved,
+    movedProbs,
     highlandSize
 }

@@ -1,4 +1,4 @@
-
+const {highlandSize} = require('./functions')
 
 function validate(type,answer) {
     const validations = {
@@ -12,7 +12,16 @@ function validate(type,answer) {
         },
         
         cordinates: function() {
-            if(!Number(answer[0]) || !Number(answer[1])|| !['N','S','E','W'].includes(answer[2])){
+            if(
+                    answer.length < 3
+                ||  Number(answer[1] > highlandSize.y)
+                ||  Number(answer[0] > highlandSize.x)
+                ||  Number(answer[0] < 0)
+                ||  Number(answer[1] < 0)
+                || !Number(answer[1])
+                || !Number(answer[0]) 
+                || !['N','S','E','W'].includes(answer[2])
+            ){
                 console.log('Entrada inválida, digite novamente!')
                 return true;
             }

@@ -6,23 +6,8 @@ let {
     workDirections, 
     probes, 
     highlandSize, 
-    probesMoved 
+    movedProbs 
 } = require('./functions')
-
-// L R 90 graus.
-// M Mover a sonda.
-// P Aciona a camera.
-
-// Adicionar linhas de entrada para tamanho do planalto [X]
-    // Garantir que seja recebido apenas numeros inteiros [X] 
-// Adicionar cordenadas atuais da sonda [X]
-    // Garantir que as entradas sejam inteiros positivos [X]
-    // Garantir que a direção seja apenas (N S W E) [X]
-// Criar instruções de movimento para sonda [X]
-    // Garantir que os movimentos da sonda recebidos sejam (M R L P) [X]
-// Adicionar linhas de entrada para adicionar mais sondas [X]
-// Garantir que as instruções de movimento sejam criadas apenas após que todas as sondas sejam adicionadas []
-// Criar uma linha de instruções de movimento para cada sonda [X] 
 
 const readLine = createInterface({
     input:process.stdin,
@@ -36,7 +21,7 @@ const questions = {
             questions[0]()
             return;
         }
-        highlandSize.x = answer
+        highlandSize.x = Number(answer)
         questions[1]()
     }),
     
@@ -45,7 +30,7 @@ const questions = {
             questions[1]()
             return;
         }
-        highlandSize.y = answer
+        highlandSize.y = Number(answer)
         questions[2]()
     }),
 
@@ -55,27 +40,24 @@ const questions = {
             return;
         }
         workCordinates({ 
-            x: answer[0],
-            y: answer[1],
+            x: Number(answer[0]),
+            y: Number(answer[1]),
             d: answer[2] 
         })
-
         questions[4]()
     }),
 
-    3: () => readLine.question(`Defina as instruções da sonda ${probesMoved + 1}: `, answer => {    
-        const actualIndex = probesMoved
-
+    3: () => readLine.question(`Defina as instruções da sonda ${movedProbs + 1}: `, answer => {   
         let instructions = {
-            'M': () => workMovement(actualIndex),
-            'P': () => {
-                console.log('Fotografando area')
-                setTimeout(() => {
-                    console.log('Fotografado!')
-                },500 
-            )},
-            'L': () => workDirections('L',actualIndex),
-            'R': () => workDirections('R',actualIndex)
+            'M': () => {
+                if(workMovement(movedProbs)){
+                    questions[3]()
+                    return;
+                }
+            },
+            'P': () => console.log('Área fotografada!'),
+            'L': () => workDirections('L',movedProbs),
+            'R': () => workDirections('R',movedProbs)
         }
 
         for(const instruction of answer){
@@ -86,9 +68,15 @@ const questions = {
             instructions[instruction]()
         }
 
-        probesMoved++
-        console.log(probes)
-        probesMoved > probes.length - 1 ? readLine.close() : questions[3]()
+        movedProbs++
+
+        if(movedProbs > probes.length - 1){
+            const { x, y, d } = probes[movedProbs-1]
+            console.log(`${x} ${y} ${d}`)
+            readLine.close()  
+            return;
+        }
+        questions[3]()
     }),
 
     4: () => readLine.question("Inserir mais uma sonda? s = (sim) n = (não): ", answer => {
