@@ -39,7 +39,6 @@ function workMovement(index) {
 
 function workCordinates({ x, y, d }) {
     probes.push({ x, y, d})
-    console.log(probes)
 }
 
 module.exports = {

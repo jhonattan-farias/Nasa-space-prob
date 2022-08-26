@@ -5,8 +5,16 @@ function validate() {
         highland,
         cordinates,
         instructions,
-        movement
+        movement,
+        twoChoiceAnswer
     } = {
+        twoChoiceAnswer: function(answer) {
+            if(answer.toLowerCase() !== 'n' && answer.toLowerCase() !== 's'){
+                console.log('Entrada inválida, digite Novamente!')
+                return true;
+            }
+            return false
+        },
         highland: function(answer) {
             if(answer < 0 || !Number(answer)){
                 console.log('Entrada inválida, digite novamente!')
@@ -73,7 +81,13 @@ function validate() {
         }
 
     }
-    return { highland, cordinates, instructions, movement }
+    return { 
+        highland, 
+        cordinates, 
+        instructions, 
+        movement, 
+        twoChoiceAnswer 
+    }
 }
 
 module.exports = {

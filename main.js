@@ -6,7 +6,7 @@ let {
     workDirections, 
     probes, 
     highlandSize, 
-    movedProbs 
+    movedProbs,
 } = require('./functions')
 
 const readLine = createInterface({
@@ -77,16 +77,33 @@ const questions = {
         movedProbs++
 
         if(movedProbs > probes.length - 1){
-            const { x, y, d } = probes[movedProbs - 1]
-            console.log(`${x} ${y} ${d}`)
-            readLine.close()  
+            probes.forEach(({ x, y, d },index) => {
+                readLine.write(` Sonda ${index + 1}: ${x} ${y} ${d} \n`)
+            })
+            questions[5]()  
             return;
         }
         questions[3]()
     }),
 
     4: () => readLine.question("Inserir mais uma sonda? s = (sim) n = (não): ", answer => {
+        const { twoChoiceAnswer } = validate()
+
+        if(twoChoiceAnswer(answer)){
+            questions[4]()
+            return;
+        }
         answer === 's' ? questions[2]() : questions[3]();
+    }),
+
+    5: () => readLine.question("Mover as sondas novamente? s=(sim) n=(não)", answer => {
+        const { twoChoiceAnswer } = validate()
+        movedProbs = 0;
+        if(twoChoiceAnswer(answer)){
+            questions[5]()
+            return;
+        }
+        answer === 's' ? questions[3]() : readLine.close()
     })
 }
 
