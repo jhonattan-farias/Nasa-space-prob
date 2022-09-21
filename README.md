@@ -8,9 +8,8 @@
  
  **Algumas observações**
  
- - *Ao invés das cordenadas do ponto x-y serem escritas em uma linha, agora terá uma linha para adicionar o eixo X e outra para o eixo y.*
+ - *Haverá uma linha para adicionar o eixo X e outra para o eixo y.*
  - *Antes de finalizar o programa, ele irá perguntar se deseja mover as sondas novamente.*
- - *Eu fiquei em duvida sobre a instrução da letra P, então apenas fiz um log com um texto.*
 
 #### Para rodar o projeto é necessario que ja tenha o NodeJs instalado em sua maquina.
 
