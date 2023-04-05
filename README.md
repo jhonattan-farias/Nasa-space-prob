@@ -21,6 +21,27 @@
 
 ### Com isso o script da pasta `main.js` será lido e poderá interagir com ele pelo terminal.
   
+<h1>Exploring Mars</h1>
+  
+<h2>To create this project, technologies were used</h2>
+  
 
+| Javascript | NodeJs |
+|------------|--------|
+ 
+ **Some observations**
+ 
+ - *There will be a line to add the X-axis and another for the y-axis.*
+ - *Before finishing the program, it will ask if you want to move the probes again.*
+
+#### To run the project, you must already have NodeJs installed on your machine.
+
+##### Instructions
+
+1) **Fork (clone) the project on your computer**
+2) **Navigate to the cloned project folder using the command terminal (or use the code editor terminal you have)**
+3) **Run the command `node main.js`**
+
+### With this the script from the `main.js` folder will be read and you will be able to interact with it via the terminal.
   
   
